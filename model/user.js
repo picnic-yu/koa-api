@@ -33,10 +33,49 @@ exports.addUser = function(name, mail,password) {
         name: name,
         mail: mail,
         password:password
+    }).then( (result) => {
+        console.log(result);
     });
+
+    // User.create({
+    //     name: 'XiaoMing',
+    //     password: '1234567890',
+    //     mail: 'xiaoming@qq.com'
+    // }).then(function(result){
+    //         console.log('inserted XiaoMing ok');
+    // }).catch(function(err){
+    //         console.log('inserted XiaoMing error');
+    //         console.log(err.message);
+    // });
 };
+
 
 // 通过用户名查找用户
 exports.findByName = function(name) {
-    return User.findOne({ where: { name: name } });
+    // return User.findAll({
+    //     where: {name: name}
+    // }).on('success',function (res) {
+    //     console.log(res);
+    // }).on('failure', function(err) {
+    //     console.log(err);
+    // });
+    return User.findAll({
+        where:{
+            name:{
+                $like:`${name}%`
+            }
+        }
+    })
+};
+exports.findUser = function(name, password) {
+    let obj = {};
+    if(name){
+        obj.name = name;
+    }
+    if(password){
+        obj.name = password;
+    }
+    return User.findAll({
+        where:obj
+    })
 };

@@ -66,7 +66,65 @@ router.post('/register', async (ctx, next) => {
         });
     }
 });
+//post tasks (add new task)
+router.post('/list', async (ctx, next) => {
+    var name = ctx.request.body.name || '';
+    var mail = ctx.request.body.mail || '';
+    var password = ctx.request.body.password || '';
+    var result = '{"code":"task:task_not_found","msg":"task not found"}';
+    var status = HttpStatus.BAD_REQUEST;
+    ctx.response.type = 'application/json';  
+    await user.findByName(name).then(function(result){
+        console.log('query all users');
 
+        for (var i = 0, usr; usr = result[i++];) {
+            console.log('name=' + usr.name + ', password=' + usr.password + ', mail=' + usr.mail);
+        }
+        result = {
+            content:result,
+            code:HttpStatus.OK
+        }; 
+        status = HttpStatus.OK;  
+        ctx.response.body = result; 
+        ctx.response.status = status; 
+       
+    }).catch(function(err){
+        // sql语句错误捕捉
+        console.log(err);
+        result = {
+            content:[],
+            code:500,
+            msg:'服务器错误'
+        };  
+        ctx.response.body = result; 
+        ctx.response.status = 200; 
+    });
+});
+router.post('/user', async (ctx, next) => {
+    var name = ctx.request.body.name || '';
+    var mail = ctx.request.body.mail || '';
+    var password = ctx.request.body.password || '';
+    var result = '{"code":"task:task_not_found","msg":"task not found"}';
+    var status = HttpStatus.BAD_REQUEST;
+    ctx.response.type = 'application/json';  
+    user.findUser(name, password).then(function(result){
+        
+        result = {
+            content:result,
+            code:HttpStatus.OK
+        }; 
+        status = HttpStatus.OK;  
+        ctx.response.body = result; 
+        ctx.response.status = status; 
+        console.log('status',status);
+        console.log('result',result);
+        console.log('response.result',ctx.response.body);
+        console.log(ctx.response)
+    }).catch(function(err){
+        // sql语句错误捕捉
+        console.log(err);
+    });
+});
 
 
 module.exports = router;
