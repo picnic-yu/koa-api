@@ -50,8 +50,7 @@ router.post('/register', async (ctx, next) => {
     var password = ctx.request.body.password || '';
 
     ctx.response.type = 'application/json';
-    console.log(2222222222222);
-    console.log(user)
+    console.log(ctx.request.body)
     if('' === name){
         //title is empty
         ctx.response.status = HttpStatus.BAD_REQUEST;
