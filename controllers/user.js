@@ -3,46 +3,9 @@
 const router = require('koa-router')();
 
 const HttpStatus = require('../utils/httpStatusCode');
-
-//just for test
-const todolist = require('../todo_list');
-
 //set the api prefix
 router.prefix('/api/v1');
-
-
 var user = require('../model/user');
-
-
-
-
-
-
-//get tasks router
-router.get('/tasks', async (ctx, next) => {
-  ctx.response.type = 'application/json';
-  ctx.response.status = HttpStatus.OK;
-  ctx.response.body = todolist;
-});
-
-//get tasks/task_id router
-router.get('/tasks/:task_id', async (ctx, next) => {
-    var task_id = ctx.params.task_id;
-    var result = '{"code":"task:task_not_found","msg":"task not found"}';
-    var status = HttpStatus.BAD_REQUEST;
-
-    ctx.response.type = 'application/json';
-    for(let i in todolist.tasks){
-        if(task_id === todolist.tasks[i].id.toString()){
-            result = todolist.tasks[i];
-            status = HttpStatus.OK;
-            break;           
-        }
-    }
-    ctx.response.body = result; 
-    ctx.response.status = status;    
-});
-
 //post tasks (add new task)
 router.post('/register', async (ctx, next) => {
     var name = ctx.request.body.name || '';
